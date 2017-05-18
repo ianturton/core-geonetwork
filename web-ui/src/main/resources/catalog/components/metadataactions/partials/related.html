@@ -1,6 +1,6 @@
 <div class="gn-related-resources"
      data-ng-if="relationFound">
-  <h2>{{::title}}</h2>
+  <h2>{{::title}} sdsadsa</h2>
 
   <div class=""
        data-ng-repeat="(type, items) in relations track by $index"
@@ -26,11 +26,11 @@
       </div>
       <div class="col-xs-7">
         <!-- WMS & WFS contains layer name in title -->
-        <h4 data-ng-if="mainType !== 'WMS' &&
+        <h4 data-ng-if="((mainType === 'WMS' || mainType === 'WFS') &&
+                        !isLayerProtocol(r.protocol)) &&
                       mainType !== 'WCS' &&
                       mainType !== 'LINKDOWNLOAD' &&
-                      mainType !== 'LINK' &&
-                      r.protocol !== 'OGC:WFS' ">
+                      mainType !== 'LINK'">
           {{::(r.title | gnLocalized: lang) || r.url}}
         </h4>
         <!-- Display description if available -->
@@ -46,23 +46,57 @@
            data-ng-if="mainType.indexOf('MD') == 0">
           {{::r.title | gnLocalized: lang | striptags | characters:150}}
         </p>
+
         <p class="text-muted"
            data-ng-if="mainType === 'WMS'">
-        <span data-translate=""
+        <span data-ng-show="isLayerProtocol(r.protocol)"
+              data-translate=""
               data-translate-values="{url:'{{r.url}}', layer:'{{r.title | gnLocalized: lang}}'}">
           wmsLinkDetails</span>
+
+          <span data-ng-show="!isLayerProtocol(r.protocol)"
+                data-translate=""
+                data-translate-values="{url:'{{r.url}}'}">
+          wmsServiceLinkDetails</span>
         </p>
+
         <p class="text-muted"
-           data-ng-if="r.protocol === 'OGC:WFS'">
+           data-ng-if="mainType === 'WFS' && isLayerProtocol(r.protocol)">
         <span data-translate=""
               data-translate-values="{url:'{{r.url}}', layer:'{{r.title | gnLocalized: lang}}'}">
           wfsLinkDetails</span>
         </p>
+        <div data-ng-if="mainType === 'WFS' && isLayerProtocol(r.protocol)"
+          data-gn-no-map-wfs-download=""
+          data-typename="{{r.title | gnLocalized: lang}}"
+          data-url="{{r.url}}">
+        </div>
+
+        <p class="text-muted"
+           data-ng-if="mainType === 'WFS' && !isLayerProtocol(r.protocol)">
+        <span data-translate=""
+              data-translate-values="{url:'{{r.url}}'}">
+          wfsServiceLinkDetails</span>
+        </p>
+        <div data-ng-if="mainType === 'WFS' && !isLayerProtocol(r.protocol)"
+             data-gn-no-map-wfs-download=""
+             data-typename=""
+             data-url="{{r.url}}">
+        </div>
+
         <p class="text-muted"
            data-ng-if="mainType === 'WCS'">
         <span data-translate=""
               data-translate-values="{url:'{{r.url}}', layer:'{{r.title | gnLocalized: lang}}'}">
           wcsLinkDetails</span>
+        </p>
+
+        <p class="text-muted"
+           data-ng-if="mainType === 'ATOM'">
+          <span data-translate=""
+                data-translate-values="{url:'{{r.url}}', layer:'{{r.title | gnLocalized: lang}}'}">
+            atomLinkDetails
+          </span>
         </p>
 
         <p class="text-muted"

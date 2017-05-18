@@ -9,18 +9,30 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>messaging</artifactId>
+  <artifactId>solr</artifactId>
+  <name>Solr module</name>
+  <packaging>pom</packaging>
+  <modules>
+    <module>solr-config</module>
+    <module>solr-bridge</module>
+  </modules>
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-core</artifactId>
-      <version>${activemq.version}</version>
+      <groupId>org.apache.solr</groupId>
+      <artifactId>solr-solrj</artifactId>
+      <version>${solr.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-pool</artifactId>
-      <version>${activemq.version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring.version}</version>
     </dependency>
   </dependencies>
+
+
+  <properties>
+    <nodeid>srv</nodeid>
+  </properties>
 </project>

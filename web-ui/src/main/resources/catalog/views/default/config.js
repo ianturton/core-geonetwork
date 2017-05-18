@@ -118,6 +118,106 @@
             view: new ol.View(angular.extend({}, mapsConfig))
           });
 
+
+          /** Facets configuration */
+          searchSettings.facetsSummaryType = 'details';
+
+          /*
+             * Hits per page combo values configuration. The first one is the
+             * default.
+             */
+          searchSettings.hitsperpageValues = [20, 50, 100];
+
+          /* Pagination configuration */
+          searchSettings.paginationInfo = {
+            hitsPerPage: searchSettings.hitsperpageValues[0]
+          };
+
+          /*
+             * Sort by combo values configuration. The first one is the default.
+             */
+          searchSettings.sortbyValues = [{
+            sortBy: 'relevance',
+            sortOrder: ''
+          }, {
+            sortBy: 'changeDate',
+            sortOrder: ''
+          }, {
+            sortBy: 'title',
+            sortOrder: 'reverse'
+          }, {
+            sortBy: 'rating',
+            sortOrder: ''
+          }, {
+            sortBy: 'popularity',
+            sortOrder: ''
+          }, {
+            sortBy: 'denominatorDesc',
+            sortOrder: ''
+          }, {
+            sortBy: 'denominatorAsc',
+            sortOrder: 'reverse'
+          }];
+
+          /* Default search by option */
+          searchSettings.sortbyDefault = searchSettings.sortbyValues[0];
+
+          /* Custom templates for search result views */
+          searchSettings.resultViewTpls = [{
+                  tplUrl: '../../catalog/components/search/resultsview/' +
+                  'partials/viewtemplates/grid.html',
+                  tooltip: 'Grid',
+                  icon: 'fa-th'
+                }];
+
+          // For the time being metadata rendering is done
+          // using Angular template. Formatter could be used
+          // to render other layout
+
+          // TODO: formatter should be defined per schema
+          // schema: {
+          // iso19139: 'md.format.xml?xsl=full_view&&id='
+          // }
+          searchSettings.formatter = {
+            // defaultUrl: 'md.format.xml?xsl=full_view&id='
+            // defaultUrl: 'md.format.xml?xsl=xsl-view&uuid=',
+            // defaultPdfUrl: 'md.format.pdf?xsl=full_view&uuid=',
+            list: [{
+              label: 'full',
+              url : function(md) {
+                return '../api/records/' + md.getUuid() + '/formatters/xsl-view?root=div&view=advanced';
+              }
+            }]
+          };
+
+          // Mapping for md links in search result list.
+          searchSettings.linkTypes = {
+            links: ['LINK', 'kml'],
+            downloads: ['DOWNLOAD'],
+            //layers:['OGC', 'kml'],
+            layers:['OGC'],
+            maps: ['ows']
+          };
+
+          // Values default|list
+          searchSettings.relatedMode = 'default';
+
+          searchSettings.mapProtocols = {
+            layers: [
+              'OGC:WMS',
+              'OGC:WMS-1.1.1-http-get-map',
+              'OGC:WMS-1.3.0-http-get-map',
+              'OGC:WFS'],
+            services: [
+              'OGC:WMS-1.3.0-http-get-capabilities',
+              'OGC:WMS-1.1.1-http-get-capabilities',
+              'OGC:WFS-1.0.0-http-get-capabilities']
+          };
+
+          // Set the default template to use
+          searchSettings.resultTemplate =
+              searchSettings.resultViewTpls[0].tplUrl;
+
           // Set custom config in gnSearchSettings
           angular.extend(searchSettings, {
             viewerMap: viewerMap,
